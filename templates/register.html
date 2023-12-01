@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+</head>
+<body>
+    <h1>Sign Up</h1>
+    <form action="{{ url_for('signup') }}" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Sign Up</button>
+    </form>
+
+<script>
+   
+
+function signup() {
+    const username = document.getElementById('signupUsername').value;
+    const password = document.getElementById('signupPassword').value;
+    const email = document.getElementById('signupEmail').value;
+
+    // Make a POST request to your Flask API for signup
+    axios.post('http://127.0.0.1:5000/signup', { username, password, email })
+        .then(response => {
+            console.log(response.data);
+            // Handle successful signup (redirect, update UI, etc.)
+        })
+        .catch(error => {
+            console.error(error);
+            // Handle signup error (show error message, etc.)
+        });
+}
+
+</script>
+</body>
+</html>

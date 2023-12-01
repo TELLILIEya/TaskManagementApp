@@ -1,32 +1,82 @@
-from flask import Flask, abort, render_template, request, jsonify
+from flask import Flask, abort, render_template, request, jsonify, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+
 
 
 app = Flask(__name__)
+login_manager = LoginManager(app)
+
+app.config['SECRET_KEY'] = 'my_key'
+
 app.config['SQLALCHEMY_DATABASE_URI']= 'mysql://root:kanunviolon@localhost/soa_app'
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
 @app.route('/', methods=['GET'])
 def home():
-    return '''<h1>Task Management Application</h1>'''
+    return  render_template('accueil.html')
 
-class User(db.Model):
+
+class User(UserMixin,db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique= True, nullable = False)
     email = db.Column(db.String(120), unique=True, nullable= False)
     password = db.Column(db.String(60), nullable= False)
 
+@login_manager.user_loader
+def load_user(user_id):
+    # Implémentez cette fonction pour charger un utilisateur à partir de l'ID
+    return User.query.get(int(user_id))
 
-@app.route("/api/users/register",methods = ['POST'])
-def register():
-    data = request.get_json()
-    hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
-    user = User (username = data['username'], email = data['email'], password = hashed_password)
-    db.session.add(user)
-    db.session.commit()
-    return jsonify({"message":"User registered successfully"}), 201
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        hashed_password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
+        email = request.form['email']
+        user = User (username = username, email = email, password = hashed_password)
+        db.session.add(user)
+        db.session.commit()       
+        return redirect(url_for('login'))
+    return render_template('accueil.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+
+        password = request.form['password']
+        email = request.form['email']
+        user = User.query.filter_by(email = email).first()
+       
+        if user and bcrypt.check_password_hash(user.password, password):
+            login_user(user)
+            flash('Login successful!', 'success')
+            return redirect(url_for('index'))
+        else:
+            flash('Login unsuccessful. Please check your email and password.', 'danger')
+    return render_template('login.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
+
+@app.route('/index', methods=['GET'])
+def index():
+    return render_template('index.html')
+
+
+
+
+@app.route("/api/users/profile/<int:user_id>",methods=['GET'])
+def get_profile(user_id):
+    user = User.query.get_or_404(user_id)
+    return jsonify({"username":user.username, "email":user.email}), 200
+
 
 @app.route("/api/users/get_users",methods=['GET'])
 def get_users():
@@ -35,21 +85,8 @@ def get_users():
 
     return {"users": user_list}
 
-@app.route("/api/users/profile/<int:user_id>",methods=['GET'])
-def get_profile(user_id):
-    user = User.query.get_or_404(user_id)
-    return jsonify({"username":user.username, "email":user.email}), 200
 
-
-@app.route("/api/users/login",methods=['POST'])
-def login():
-    data = request.get_json()
-    user = User.query.filter_by(email = data['email']).first()
-    if user and bcrypt.check_password_hash(user.password, data['password']):
-        return jsonify({"message":"Login successful","user_id":user.id}), 200
-    else:
-        return jsonify({"message":"Invalid email or password"}), 401
-    
+@login_required   
 @app.route("/api/users/update_user/<int:user_id>",methods=['POST'])
 def update_user(user_id):
     user = User.query.get_or_404(user_id)
@@ -60,7 +97,7 @@ def update_user(user_id):
     db.session.commit()
     return jsonify({"message":"User updated successfully"}), 200
 
-
+@login_required
 @app.route("/api/users/delete_user/<int:user_id>",methods = ['GET','DELETE'])
 def delete_user(user_id):
     user = User.query.get(user_id)

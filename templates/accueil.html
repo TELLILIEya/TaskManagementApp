@@ -274,42 +274,48 @@ section .page .login.active
 			<button class="btn">Sign Up</button>
 		</div>
 		<div class="sign_up">
-			<form method="POST" action="signup_user.php">
-			<h2>Sign Up your Account</h2>
-			<input type="text" name="name" placeholder="Username" required><br>
-			<input type="email" name="email" placeholder="Email" required><br>
-			<input type="password" name="password" placeholder="Password" required><br>
-			<input type="submit" name="sign_up" value="Sign Up" class="up">
-		</form>
-	</div>
-	<div class="login">
+            <form action="{{ url_for('signup') }}" method="post">
+                <h2>Sign Up your Account</h2>
+                <input type="text" id="username" name="username" placeholder="Username" required><br>
+			    <input type="email" name="email" placeholder="Email" required><br>
+			    <input type="password" name="password" placeholder="Password" required><br>
+			    <input type="submit" name="sign_up" value="Sign Up" class="up">
+                
+                
+            </form>
+        </div>
+
+			
+	
+	    <div class="login">
 			<form method="POST" action="login_user.php">
 			<h2>Login your Account</h2>
 			<input type="email" name="email" placeholder="Email" required><br>
 			<input type="password" name="password" placeholder="Password" required><br>
 			<input type="submit" name="sign_in" value="Sign In" class="in">
-		</form>
+		    </form>
 		</div>
 	</div>
 </section>
 <script>
-    	$(document).ready(function(){
-		$('.sign_in').click(function(){
-			$('.login').addClass('active')
-			$('.welcome').addClass('active')
-			$('.sign_in').addClass('active')
-			$('.btn').addClass('active')
-			$('.sign_up').addClass('active')
-		})
-		$('.btn').click(function(){
-			$('.sign_up').removeClass('active')
-			$('.login').removeClass('active')
-			$('.welcome').removeClass('active')
-			$('.sign_up').removeClass('active')
-			$('.btn').removeClass('active')
-			$('.sign_in').removeClass('active')
-		})
-	})
+    	$(document).ready(function () {
+    function activateLoginForm() {
+        $('.login, .welcome, .sign_in, .btn, .sign_up').addClass('active');
+    }
+
+    function deactivateLoginForm() {
+        $('.login, .welcome, .sign_in, .btn, .sign_up').removeClass('active');
+    }
+
+    $('.sign_in').click(function () {
+        activateLoginForm();
+    });
+
+    $('.btn').click(function () {
+        deactivateLoginForm();
+    });
+});
+
 
 </script>
 </body>
