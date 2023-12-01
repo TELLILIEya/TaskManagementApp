@@ -70,8 +70,6 @@ def index():
     return render_template('index.html')
 
 
-
-
 @app.route("/api/users/profile/<int:user_id>",methods=['GET'])
 def get_profile(user_id):
     user = User.query.get_or_404(user_id)
@@ -110,22 +108,34 @@ def delete_user(user_id):
     
 
 class Task(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
+    id_task = db.Column(db.Integer, primary_key = True)
     title = db.Column(db.String(100), nullable = False)
     description = db.Column(db.Text)
     deadline = db.Column(db.Date)
     completed = db.Column(db.Boolean, default =False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable = False)
+    id_user = db.Column(db.Integer, db.ForeignKey('user.id'),nullable = False)
 
-@app.route("/api/tasks",methods= ['POST'])
+
+@app.route('/tasks/create', methods=['GET', 'POST'])
+@login_required
 def create_task():
-    data = request.get_json()
-    task = Task(title = data['title'], description = data.get('description'),deadline = data.get('deadline'), user_id = data['user_id'])
-    db.session.add(task)
-    db.session.commit()
-    return jsonify({"message":"Task created successfully"}), 201
+    if request.method == 'POST':
+        title = request.form['title']
+        description = request.form['description']
+        deadline = request.form['deadline']
+        new_task = Task(title=title, description=description,deadline = deadline, id_user=current_user.id)
+        db.session.add(new_task)
+        db.session.commit()
+        return redirect(url_for('task_list'))
+    return render_template('create_task.html')
 
-@app.route("/api/tasks/<int:task_id>",methods=['PUT'])
+@app.route('/tasks/task_list',methods =['GET'])
+@login_required
+def task_list():
+    tasks = Task.query.filter_by(id_user=current_user.id).all()
+    return render_template('task_list.html', tasks=tasks)
+
+"""@app.route("/api/tasks/<int:task_id>",methods=['PUT'])
 def update_task(task_id):
     task = Task.query.get_or_404(task_id)
     data = request.get_json()
@@ -133,7 +143,7 @@ def update_task(task_id):
     task.description = data.get('description',task.description)
     task.deadline = data.get('deadline',task.deadline)
     db.session.commit()
-    return jsonify({"message":"Task updated successfully"}), 200
+    return jsonify({"message":"Task updated successfully"}), 200"""
 
 @app.route("/api/tasks/<int:task_id>/completed",methods=['PATCH'])
 def complete_task(task_id):
