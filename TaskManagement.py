@@ -70,22 +70,34 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/api/users/profile/<int:user_id>",methods=['GET'])
+@app.route("/users/delete_user",methods = ['GET','DELETE'])
+@login_required
+def delete_user():
+    if request.method =='DELETE':
+        user = User.query.get(current_user.id)
+        db.session.delete(user)
+        db.session.commit()
+        return redirect(url_for('home'))
+    return render_template('register.html')
+        
+
+
+"""@app.route("/api/users/profile/<int:user_id>",methods=['GET'])
 def get_profile(user_id):
     user = User.query.get_or_404(user_id)
-    return jsonify({"username":user.username, "email":user.email}), 200
+    return jsonify({"username":user.username, "email":user.email}), 200"""
 
 
-@app.route("/api/users/get_users",methods=['GET'])
+"""@app.route("/api/users/get_users",methods=['GET'])
 def get_users():
     users = User.query.all()
     user_list = [{"id": user.id, "username": user.username, "email": user.email} for user in users]
 
-    return {"users": user_list}
+    return {"users": user_list}"""
 
 
 @login_required   
-@app.route("/api/users/update_user/<int:user_id>",methods=['POST'])
+@app.route("/users/update_user/<int:user_id>",methods=['POST'])
 def update_user(user_id):
     user = User.query.get_or_404(user_id)
     data = request.get_json()
@@ -95,16 +107,7 @@ def update_user(user_id):
     db.session.commit()
     return jsonify({"message":"User updated successfully"}), 200
 
-@login_required
-@app.route("/api/users/delete_user/<int:user_id>",methods = ['GET','DELETE'])
-def delete_user(user_id):
-    user = User.query.get(user_id)
-    if user:
-        db.session.delete(user)
-        db.session.commit()
-        return {"message": f"User with ID {user_id} deleted successfully"}, 200
-    else:
-        return jsonify({"message": f"User with ID {user_id} not found"}), 404
+
     
 
 class Task(db.Model):
@@ -113,7 +116,7 @@ class Task(db.Model):
     description = db.Column(db.Text)
     deadline = db.Column(db.Date)
     completed = db.Column(db.Boolean, default =False)
-    id_user = db.Column(db.Integer, db.ForeignKey('user.id'),nullable = False)
+    id_user = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'),nullable = False)
 
 
 @app.route('/tasks/create', methods=['GET', 'POST'])
@@ -145,12 +148,41 @@ def update_task(task_id):
     db.session.commit()
     return jsonify({"message":"Task updated successfully"}), 200"""
 
-@app.route("/api/tasks/<int:task_id>/completed",methods=['PATCH'])
+
+@app.route('/tasks/completed/<int:task_id>', methods=['PUT'])
+@login_required
 def complete_task(task_id):
     task = Task.query.get_or_404(task_id)
     task.completed = True
     db.session.commit()
     return jsonify({"message":"Task marked as completed"}),200
+
+@app.route('/tasks/<int:task_id>', methods=['PUT'])
+@login_required
+def update_task(task_id):
+    task = Task.query.get_or_404(task_id)
+    
+
+    # Mettre à jour les données de la tâche en fonction des données reçues
+    data = request.json
+    task['description'] = data.get('description', task['description'])
+    task['title'] = data.get('title',task['title'])
+    task['deadline'] = data.get('deadline',task['deadline'])
+
+    return jsonify({'message': 'Task updated', 'task': task})
+
+@login_required
+@app.route("/tasks/delete_task/<int:task_id>",methods = ['DELETE'])
+def delete_task(task_id):
+    task = Task.query.get(task_id)
+    if task:
+        db.session.delete(task)
+        db.session.commit()
+        return redirect(url_for('task_list'))
+    else:
+        return jsonify({"message": f"Task with ID {task_id} not found"}), 404
+
+
 
 
 

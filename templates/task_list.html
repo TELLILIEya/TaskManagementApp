@@ -10,8 +10,57 @@
 
     <ul>
         {% for task in tasks %}
-            <li>{{ task.title }} - {{ task.description }} - {{ task.deadline }}</li>
+        
+            <li>
+                <input type="checkbox" id="task_{{ task.task_id }}" {% if task.completed %}checked{% endif %} onclick="markTaskAsDone({{ task.id_task }})">
+                {{ task.title }} - {{ task.description }} - {{ task.deadline }} - {{task.completed}}
+                <button onclick="updateTask({{ task.id_task}})">Mettre à jour</button>
+                <button onclick="deleteTask({{ task.id_task}})">Supprimer</button>
+            </li>
         {% endfor %}
     </ul>
+
+    <script>
+        function markTaskAsDone(taskId) {
+            // Envoyer une requête PUT à l'API Flask pour marquer la tâche comme terminée
+            fetch(`/tasks/completed/${taskId}`, { method: 'PUT' })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('HTTP error! Status: ${response.status}');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    // Mettre à jour l'interface utilisateur si nécessaire
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+        function updateTask(taskId) {
+        // Rediriger l'utilisateur vers une page ou un formulaire pour la mise à jour de la tâche
+        window.location.href = `/tasks/${taskId}/update`;
+    }
+
+    function deleteTask(taskId) {
+        // Envoyer une requête DELETE à l'API Flask pour supprimer la tâche
+        fetch(`/tasks/delete_task/${taskId}`, { method: 'DELETE' })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('HTTP error! Status: ${response.status}');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                // Mettre à jour l'interface utilisateur si nécessaire
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    </script>
 </body>
 </html>

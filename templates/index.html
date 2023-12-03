@@ -8,6 +8,40 @@
 <body>
     <h1>Welcome to Task Management</h1>
 
+    <button id="deleteUserBtn">Delete My Account</button>
+
+    <script>
+        document.getElementById('deleteUserBtn').addEventListener('click', function() {
+            // Remplacez 'user_id' par l'ID de l'utilisateur que vous souhaitez supprimer
+            const userId = 123;
+
+            // Envoie une requête DELETE à l'API Flask
+            fetch(`/users/delete_user?user_id=${userId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                // Gérez la réponse, par exemple, redirigez l'utilisateur après la suppression
+                window.location.href = '/home';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Gérez les erreurs, par exemple, affichez un message à l'utilisateur
+            });
+        });
+    </script>
+  
+
+
     <a href="{{ url_for('logout') }}">Logout</a>
 </body>
 </html>
