@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Task</title>
+</head>
+<body>
+    <h1>Add Task</h1>
+    <form method="POST" action="{{ url_for('create_task') }}">
+        <label for="title">Title:</label>
+        <input type="text" name="title" required>
+    
+        <label for="description">Description:</label>
+        <textarea name="description" required></textarea>
+    
+        <label for="deadline">Deadline:</label>
+        <input type="date" name="deadline" required>
+    
+        <button type="submit">Create Task</button>
+
+<script>
+   
+
+function signup() {
+    const title = document.getElementById('create_taskTitle').value;
+    const description = document.getElementById('create_taskDescription').value;
+    const deadline = document.getElementById('create_taskDeadline').value;
+
+    // Make a POST request to your Flask API for signup
+    axios.post('http://127.0.0.1:5000/tasks/create', { title,description,deadline })
+        .then(response => {
+            console.log(response.data);
+            // Handle successful signup (redirect, update UI, etc.)
+        })
+        .catch(error => {
+            console.error(error);
+            // Handle signup error (show error message, etc.)
+        });
+}
+
+</script>
+</body>
+</html>
