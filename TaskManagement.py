@@ -185,18 +185,32 @@ def delete_task(task_id):
 
 
 
-@app.route('/tasks/update_task/<int:task_id>', methods=['GET','PUT'])
 @login_required
+@app.route("/tasks/update_task/<int:task_id>", methods=['GET', 'POST'])
 def update_task(task_id):
-    if request.method == 'PUT':
-        task = Task.query.get_or_404(task_id)
-        # Mettre à jour les données de la tâche en fonction des données reçues
-        data = request.json
-        task['description'] = data.get('description', task['description'])
-        task['title'] = data.get('title',task['title'])
-        task['deadline'] = data.get('deadline',task['deadline'])
+    task = Task.query.get(task_id)
 
-    return jsonify({'message': 'Task updated', 'task': task})
+    if request.method == 'POST':
+        # Récupérez les données du formulaire
+        description = request.form.get('description')
+        title = request.form.get('title')
+        deadline = request.form.get('deadline')
+
+
+        # Mettez à jour les informations de la tâche
+        task.title = title
+        task.description = description
+        task.deadline = deadline
+
+        # Appliquez les changements dans la base de données
+        db.session.commit()
+
+        # Redirigez l'utilisateur vers la page de liste des tâches ou une autre page après la modification
+        return redirect(url_for('task_list'))
+
+    return render_template("update_task.html", task=task)
+
+
 
 if __name__ == '__main__':
     with app.app_context():

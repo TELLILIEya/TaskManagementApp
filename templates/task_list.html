@@ -14,7 +14,7 @@
             <li>
                 <input type="checkbox" id="task_{{ task.task_id }}" {% if task.completed %}checked{% endif %} onclick="markTaskAsDone({{ task.id_task }})">
                 {{ task.title }} - {{ task.description }} - {{ task.deadline }} - {{task.completed}}
-                <button onclick="updateTask({{ task.id_task}})">Mettre à jour</button>
+                <button onclick="updateTask({{task.id_task}})">Mettre à jour</button>
                 <button onclick="deleteTask({{ task.id_task}})">Supprimer</button>
             </li>
         {% endfor %}
