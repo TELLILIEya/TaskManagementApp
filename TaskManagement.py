@@ -79,6 +79,30 @@ def delete_user():
         db.session.commit()
         return redirect(url_for('home'))
     return render_template('register.html')
+
+
+@login_required
+@app.route("/users/update_user", methods=['GET', 'POST'])
+def update_account():
+    if request.method == 'POST':
+        # Récupérez les données du formulaire
+        username = request.form.get('username')
+        email = request.form.get('email')
+        password = request.form.get('current_password')
+        if not bcrypt.check_password_hash(current_user.password, password):
+            return render_template("update_account.html", user=current_user, error="Incorrect current password")
+        
+        # Mettez à jour les informations de l'utilisateur
+        current_user.username = username
+        current_user.email = email
+
+        # Appliquez les changements dans la base de données
+        db.session.commit()
+
+        # Redirigez l'utilisateur vers la page d'accueil ou une autre page après la modification
+        return redirect(url_for('home'))
+
+    return render_template("update_account.html", user=current_user)
         
 
 
@@ -96,16 +120,6 @@ def get_users():
     return {"users": user_list}"""
 
 
-@login_required   
-@app.route("/users/update_user/<int:user_id>",methods=['POST'])
-def update_user(user_id):
-    user = User.query.get_or_404(user_id)
-    data = request.get_json()
-    user.username = data.get('username',user.username)
-    user.email = data.get('email',user.email)
-    user.password = data.get('password',user.password)
-    db.session.commit()
-    return jsonify({"message":"User updated successfully"}), 200
 
 
     
@@ -157,19 +171,6 @@ def complete_task(task_id):
     db.session.commit()
     return jsonify({"message":"Task marked as completed"}),200
 
-@app.route('/tasks/<int:task_id>', methods=['PUT'])
-@login_required
-def update_task(task_id):
-    task = Task.query.get_or_404(task_id)
-    
-
-    # Mettre à jour les données de la tâche en fonction des données reçues
-    data = request.json
-    task['description'] = data.get('description', task['description'])
-    task['title'] = data.get('title',task['title'])
-    task['deadline'] = data.get('deadline',task['deadline'])
-
-    return jsonify({'message': 'Task updated', 'task': task})
 
 @login_required
 @app.route("/tasks/delete_task/<int:task_id>",methods = ['DELETE'])
@@ -184,7 +185,18 @@ def delete_task(task_id):
 
 
 
+@app.route('/tasks/update_task/<int:task_id>', methods=['GET','PUT'])
+@login_required
+def update_task(task_id):
+    if request.method == 'PUT':
+        task = Task.query.get_or_404(task_id)
+        # Mettre à jour les données de la tâche en fonction des données reçues
+        data = request.json
+        task['description'] = data.get('description', task['description'])
+        task['title'] = data.get('title',task['title'])
+        task['deadline'] = data.get('deadline',task['deadline'])
 
+    return jsonify({'message': 'Task updated', 'task': task})
 
 if __name__ == '__main__':
     with app.app_context():
