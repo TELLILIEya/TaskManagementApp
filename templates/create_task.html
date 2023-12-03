@@ -6,6 +6,16 @@
     <title>Add Task</title>
 </head>
 <body>
+    <div class="navbar">
+        <ul>
+            <li> Add Task</li>
+            <li> View Tasks</li>
+            <li> Update Account</li>
+            <li> Log Out / Delete Account </li>
+
+        </ul>
+
+    </div>
     <h1>Add Task</h1>
     <form method="POST" action="{{ url_for('create_task') }}">
         <label for="title">Title:</label>
