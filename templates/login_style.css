@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,700');
+body
+{
+	margin: 0;
+	padding: 0;
+	background: #26A69A
+}
+section
+{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	width: 500px;
+	height: 400px;
+	background: #fff;
+	border-radius: 10px;
+	box-shadow: 0px 5px 20px rgba(0,0,0,0.5);
+	background: #fff;
+}
+
+
+
+
+
+section .sign_in
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 500px;
+	height: 100%;
+	text-align: center;
+	transition: 1s cubic-bezier(.95,.32,.37,1.31);
+	z-index: 1;
+	opacity: 1;
+	visibility: visible;
+}
+section .sign_in h1
+{
+	position: relative;
+	margin: 10px;
+	margin-bottom: 50px;
+	padding: 10px;
+	font-family: 'Poppins';
+	background: #0D47A1;
+	color: white;
+	border-radius: 10px;
+
+}
+section .sign_in input
+{
+	margin: 5px 0;
+	width: 300px;
+	height: 30px;
+	font-family: 'Poppins';
+	color: #000;
+	font-weight: 700;
+}
+
+section  .sign_in input[type="email"],
+section  .sign_in input[type="password"]
+{
+	border:none;
+	outline: none;
+	border-bottom: 1px solid #000;
+	transition: .5s;
+	margin-bottom: 10px;
+	font-weight: 800;
+}
+
+section  .sign_in input[type="email"]:focus,
+section  .sign_in input[type="password"]:focus
+{
+	border-bottom-color: #D50000;
+	transition: .5s;
+	background: rgba(205, 216, 234, 0.55);
+
+}
+section  .sign_in .in
+{   margin-top: 50px;
+	width: 150px;
+	height: 40px;
+	font-weight: 400;
+	border:none;
+	outline: none;
+	background: rgb(13, 71, 161);
+	color: #fff;
+	border-radius: 30px;
+	transition: .5s;
+	cursor: pointer;
+}
+section .sign_in .in:hover
+{
+	background: transparent;
+	border:2px solid #000;
+	color: #000;
+	font-weight: 700;
+}
+
+section .sign_in.active
+{
+	left: 0;
+	opacity: 0;
+	visibility: hidden;
+	transition: 1s cubic-bezier(.95,.32,.37,1.31);
+}
+section .page .login .in
+{
+	width: 150px;
+	height: 40px;
+	font-weight: 400;
+	border:none;
+	outline: none;
+	background: #000;
+	color: #fff;
+	border-radius: 30px;
+	transition: .5s;
+	cursor: pointer;
+}
+section .page .login .in:hover
+{
+	background: transparent;
+	border:2px solid #000;
+	color: #000;
+	font-weight: 700;
+}
+section .page .login.active
+{
+	left: 0;
+	opacity: 1;
+	visibility: visible;
+	transition: 1s cubic-bezier(.95,.32,.37,1.31);
+}
