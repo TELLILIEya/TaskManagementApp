@@ -3,17 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="nav_bar_style.css">
+
     <title>Update Account</title>
 </head>
-<body>
-    <div class="navbar">
-        <ul>
-            <li> Add Task</li>
-            <li> View Tasks</li>
-            <li> Update Account</li>
-            <li> Log Out / Delete Account </li>
+<style>
+     @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,700');
+    body{
+        font-family: Poppins;
+    }
+     h1{
+        text-align: center;
+    }
+    form{
 
-        </ul>
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+        width: 70%;
+        margin-left: 200px;
+    }
+    form button {
+  text-align: center;
+  width: 20%;
+  background-color: rgba(30, 181, 163, 0.97);
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 400px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+
+}
+
+form button:hover {
+  background-color: rgba(18, 227, 203, 0.97);
+  color: black;
+}
+input, select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+h3
+{
+    text-align: center;
+}
+button {
+  text-align: center;
+  width: 20%;
+  background-color: rgb(197, 3, 33);
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 570px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+
+}
+ button:hover {
+  background-color: rgb(253, 7, 7);
+
+}
+</style>
+<body>
+    <div class="topnav">
+
+      <a >  Task Management App</a>
+      <div class="topnav-right">
+            <a href="create_task.html">Add Task</a>
+            <a href="task_list.html">View Tasks</a>
+            <a href="update_account.html"> Update Account</a>
+            <a href="{{ url_for('logout') }}"> Log Out</a>
+
+      </div>
 
     </div>
     <h1>Update Account</h1>
@@ -25,10 +94,43 @@
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" value="{{ user.email }}" required>
 
-        <label for="current_password">Current Password:</label>
+        <label for="current_password">New Password:</label>
         <input type="password" id="current_password" name="current_password" required>
 
         <button type="submit">Update Account</button>
     </form>
+    <h3>Are you sure you want to Delete your account ?</h3>
+    <button id="deleteUserBtn">Delete !</button>
+
+    <script>
+        document.getElementById('deleteUserBtn').addEventListener('click', function() {
+            // Remplacez 'user_id' par l'ID de l'utilisateur que vous souhaitez supprimer
+            const userId = 123;
+
+            // Envoie une requête DELETE à l'API Flask
+            fetch(`/users/delete_user?user_id=${userId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                // Gérez la réponse, par exemple, redirigez l'utilisateur après la suppression
+                window.location.href = '/home';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Gérez les erreurs, par exemple, affichez un message à l'utilisateur
+            });
+        });
+    </script>
+
 </body>
 </html>

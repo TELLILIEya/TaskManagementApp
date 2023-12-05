@@ -1,35 +1,95 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="nav_bar_style.css">
     <title>Task List</title>
 </head>
-<body>
-    <div class="navbar">
-        <ul>
-            <li> Add Task</li>
-            <li> View Tasks</li>
-            <li> Update Account</li>
-            <li> Log Out / Delete Account </li>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,700');
+h1 {
+    text-align: center;
+    font-family: Poppins;
+}
+table {
+  font-family:Poppins;
 
-        </ul>
+  width: 80%;
+  margin-left: 150px;
+
+
+
+}
+
+#taks td, #tasks th {
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 10px;
+}
+#tasks td, #tasks tr {
+    padding: 5px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+
+#tasks tr{background-color: #f2f2f2;}
+
+#tasks tr:hover {background-color: #ddd;}
+
+#tasks th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 10px;
+  text-align: center;
+  background-color: rgba(30, 181, 163, 0.97);
+  color: white;
+}
+</style>
+<body>
+    <div class="topnav">
+
+      <a >  Task Management App</a>
+      <div class="topnav-right">
+            <a href="create_task.html">Add Task</a>
+            <a href="task_list.html">View Tasks</a>
+            <a href="update_account.html"> Update Account</a>
+            <a href="{{ url_for('logout') }}"> Log Out</a>
+
+      </div>
 
     </div>
-    <h1>Task List for {{ current_user.username }}</h1>
 
-    <ul>
+
+    <h1>Task List for {{ current_user.username }} ! </h1>
+
+    <table id="tasks">
+        <tr>
+            <th> Done ?</th>
+            <th> Task Title </th>
+            <th> Task Description </th>
+            <th> Task Deadline </th>
+            <th> Task Completed </th>
+            <th> Update / Delete </th>
+
+        </tr>
+
+
         {% for task in tasks %}
-        
-            <li>
-                <input type="checkbox" id="task_{{ task.task_id }}" {% if task.completed %}checked{% endif %} onclick="markTaskAsDone({{ task.id_task }})">
-                {{ task.title }} - {{ task.description }} - {{ task.deadline }} - {{task.completed}}
-                <button onclick="updateTask({{task.id_task}})">Mettre à jour</button>
-                <button onclick="deleteTask({{ task.id_task}})">Supprimer</button>
-            </li>
-        {% endfor %}
-    </ul>
 
+            <tr>
+                <td> <input type="checkbox" id="task_{{ task.task_id }}" {% if task.completed %}checked{% endif %} onclick="markTaskAsDone({{ task.id_task }})"> </td>
+                <td> {{ task.title }} </td>
+                <td>{{ task.description }} </td>
+                <td>{{ task.deadline }} </td>
+                <td>{{task.completed}} </td>
+                <td> <button onclick="updateTask({{task.id_task}})">Update</button>
+                <button onclick="deleteTask({{ task.id_task}})">Delete</button> </td>
+            </tr>
+        {% endfor %}
+    </table>
     <script>
         function markTaskAsDone(taskId) {
             // Envoyer une requête PUT à l'API Flask pour marquer la tâche comme terminée

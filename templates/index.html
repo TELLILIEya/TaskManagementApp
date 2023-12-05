@@ -3,9 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="nav_bar_style.css">
+
     <title>Task Management - Index</title>
 </head>
 <body>
+      <div class="topnav">
+
+      <a >  Task Management App</a>
+      <div class="topnav-right">
+            <a href="create_task.html">Add Task</a>
+            <a href="task_list.html">View Tasks</a>
+            <a href="update_account.html"> Update Account</a>
+            <a href="{{ url_for('logout') }}"> Log Out</a>
+
+      </div>
+    </div>
     <h1>Welcome to Task Management</h1>
 
     <button id="deleteUserBtn">Delete My Account</button>

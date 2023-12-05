@@ -3,9 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="nav_bar_style.css">
+
     <title>Update Task</title>
 </head>
 <body>
+      <div class="topnav">
+
+      <a >  Task Management App</a>
+      <div class="topnav-right">
+            <a href="create_task.html">Add Task</a>
+            <a href="task_list.html">View Tasks</a>
+            <a href="update_account.html"> Update Account</a>
+            <a href="{{ url_for('logout') }}"> Log Out/Delete Account</a>
+
+      </div>
+    </div>
     <h1>Update Task</h1>
 
     <form method="POST" action="{{ url_for('update_task', task_id=task.id_task) }}">
