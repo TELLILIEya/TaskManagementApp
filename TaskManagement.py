@@ -173,15 +173,14 @@ def complete_task(task_id):
 
 
 @login_required
-@app.route("/tasks/delete_task/<int:task_id>",methods = ['DELETE'])
+@app.route("/tasks/delete_task/<int:task_id>",methods = ['DELETE','GET'])
 def delete_task(task_id):
     task = Task.query.get(task_id)
-    if task:
-        db.session.delete(task)
-        db.session.commit()
-        return redirect(url_for('task_list'))
-    else:
-        return jsonify({"message": f"Task with ID {task_id} not found"}), 404
+  
+    db.session.delete(task)
+    db.session.commit()
+    return redirect(url_for('task_list'))
+    
 
 
 

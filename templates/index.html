@@ -62,7 +62,7 @@
 
     <script>
         document.getElementById('deleteUserBtn').addEventListener('click', function() {
-            // Remplacez 'user_id' par l'ID de l'utilisateur que vous souhaitez supprimer
+            
             const userId = 123;
 
             // Envoie une requête DELETE à l'API Flask
@@ -80,18 +80,18 @@
             })
             .then(data => {
                 console.log(data);
-                // Gérez la réponse, par exemple, redirigez l'utilisateur après la suppression
+                
                 window.location.href = '/home';
             })
             .catch(error => {
                 console.error('Error:', error);
-                // Gérez les erreurs, par exemple, affichez un message à l'utilisateur
+                
             });
         });
     </script>
   
 
 
-    <a href="{{ url_for('logout') }}">Logout</a>
+    <a href="{{ url_for('logout')}}">Logout</a>
 </body>
 </html>
