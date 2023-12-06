@@ -54,7 +54,7 @@ def login():
         if user and bcrypt.check_password_hash(user.password, password):
             login_user(user)
             flash('Login successful!', 'success')
-            return redirect(url_for('index'))
+            return redirect(url_for('task_list'))
         else:
             flash('Login unsuccessful. Please check your email and password.', 'danger')
     return render_template('login.html')

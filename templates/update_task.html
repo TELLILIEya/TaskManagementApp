@@ -7,15 +7,52 @@
 
     <title>Update Task</title>
 </head>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,700');
+
+/* Add a black background color to the top navigation */
+.topnav {
+
+    background-color: #26A69A;
+    overflow: hidden;
+    border-radius: 10px;
+
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  font-family: Poppins;
+
+}
+
+/* Change the color of links on hover */
+.topnav-right a:hover {
+  background-color: rgba(18, 227, 203, 0.97);
+  color: black;
+}
+
+
+
+/* Right-aligned section inside the top navigation */
+.topnav-right {
+  float: right;
+}
+</style>
 <body>
       <div class="topnav">
 
       <a >  Task Management App</a>
       <div class="topnav-right">
-            <a href="create_task.html">Add Task</a>
-            <a href="task_list.html">View Tasks</a>
-            <a href="update_account.html"> Update Account</a>
-            <a href="{{ url_for('logout') }}"> Log Out/Delete Account</a>
+        <a href="{{ url_for('create_task') }}">Add Task</a>
+        <a href="{{ url_for('task_list') }}">View Tasks</a>
+        <a href="{{ url_for('update_account') }}"> Update Account</a>
+        <a href="{{ url_for('logout') }}"> Log Out</a>
 
       </div>
     </div>
