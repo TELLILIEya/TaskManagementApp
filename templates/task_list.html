@@ -5,85 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     <title>Task List</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,700');
-    h1 {
-        text-align: center;
-        font-family: Poppins;
-    }
-    table {
-      font-family:Poppins;
-    
-      width: 80%;
-      margin-left: 150px;
-    
-    
-    
-    }
-    
-    #taks td, #tasks th {
-      border: 1px solid #ddd;
-      border-radius: 20px;
-      padding: 10px;
-    }
-    #tasks td, #tasks tr {
-        padding: 5px;
-        text-align: center;
-        border-radius: 10px;
-    }
-    
-    
-    #tasks tr{background-color: #f2f2f2;}
-    
-    #tasks tr:hover {background-color: #ddd;}
-    
-    #tasks th {
-      padding-top: 12px;
-      padding-bottom: 12px;
-      margin-bottom: 10px;
-      text-align: center;
-      background-color: rgba(30, 181, 163, 0.97);
-      color: white;
-    }
-    @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,700');
-    
-    /* Add a black background color to the top navigation */
-    .topnav {
-    
-        background-color: #26A69A;
-        overflow: hidden;
-        border-radius: 10px;
-    
-    }
-    
-    /* Style the links inside the navigation bar */
-    .topnav a {
-      float: left;
-      color: #f2f2f2;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-      font-size: 17px;
-      font-family: Poppins;
-    
-    }
-    
-    /* Change the color of links on hover */
-    .topnav-right a:hover {
-      background-color: rgba(18, 227, 203, 0.97);
-      color: black;
-    }
-    
-    
-    
-    /* Right-aligned section inside the top navigation */
-    .topnav-right {
-      float: right;
-    }
-    
-    </style>
 </head>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,700');
+h1 {
+    text-align: center;
+    font-family: Poppins;
+}
+table {
+  font-family:Poppins;
 
+  width: 80%;
+  margin-left: 150px;
+
+
+
+}
+
+#taks td, #tasks th {
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 10px;
+}
+#tasks td, #tasks tr {
+    padding: 5px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+
+#tasks tr{background-color: #f2f2f2;}
+
+#tasks tr:hover {background-color: #ddd;}
+
+#tasks th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 10px;
+  text-align: center;
+  background-color: rgba(30, 181, 163, 0.97);
+  color: white;
+}
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,700');
+
+/* Add a black background color to the top navigation */
+.topnav {
+
+    background-color: #26A69A;
+    overflow: hidden;
+    border-radius: 10px;
+
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  font-family: Poppins;
+
+}
+
+/* Change the color of links on hover */
+.topnav-right a:hover {
+  background-color: rgba(18, 227, 203, 0.97);
+  color: black;
+}
+
+
+
+/* Right-aligned section inside the top navigation */
+.topnav-right {
+  float: right;
+}
+
+</style>
 <body>
     <div class="topnav">
 
@@ -117,12 +116,12 @@
 
             <tr>
                 <td> <input type="checkbox" id="task_{{ task.task_id }}" {% if task.completed %}checked{% endif %} onclick="markTaskAsDone({{ task.id_task }})"> </td>
-                <td> {{task.title }} </td>
-                <td>{{task.description }} </td>
-                <td>{{task.deadline }} </td>
+                <td> {{ task.title }} </td>
+                <td>{{ task.description }} </td>
+                <td>{{ task.deadline }} </td>
                 <td>{{task.completed}} </td>
                 <td> <button onclick="updateTask({{task.id_task}})">Update</button>
-                <button onclick="deleteTask({{ task.id_task}})">Delete</button> </td>
+                <button id="delete" onclick="deleteTask({{ task.id_task}})">Delete</button> </td>
             </tr>
         {% endfor %}
     </table>
