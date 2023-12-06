@@ -44,7 +44,7 @@ section .page .welcome
 section .page .welcome h2
 {
 	text-align: center;
-	margin: 50px 0;
+	margin: 80px 0;
 	font-family: 'Poppins';
 	letter-spacing: 2px;
 	color: #fff;
@@ -58,11 +58,13 @@ section .page .welcome p
 	font-weight: 300;
 }
 section .page .welcome .sign_in
-{   padding: 10px;
+{   padding: 10px 20px 10px 20px;
+    text-decoration: none;
+	margin: 300px 20px;
+    font-size: 14px;
 
-	margin: 30px 0;
 	text-align: center;
-	border-radius: 30px;
+	border-radius: 50px;
 	outline: none;
 	border:none;
 	background: transparent;
@@ -74,6 +76,11 @@ section .page .welcome .sign_in
 	visibility: visible;
 	transition: .5s;
 
+}
+section .page .welcome .sign_in:hover{
+    color: #ffffff;
+    background-color:black;
+    border:none;
 }
 section .page .welcome .btn
 {
@@ -94,15 +101,8 @@ section .page .welcome .btn
 	opacity: 0;
 	visibility: hidden;
 }
-section .page .welcome .btn.active
-{
-	opacity: 1;
-	visibility: visible;
-	transition: .5s;
-	transition-delay: .5s;
-}
-section .page .welcome .sign_in.active
-{
+section .page .welcome sign_in
+{  background-color: rgba(182, 33, 33, 0.76);
 	opacity: 0;
 	visibility: hidden;
 	display: none;
