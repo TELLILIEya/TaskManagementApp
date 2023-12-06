@@ -47,14 +47,27 @@ table {
   background-color: rgba(30, 181, 163, 0.97);
   color: white;
 }
-@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,700');
 
-/* Add a black background color to the top navigation */
-.topnav {
 
-    background-color: #26A69A;
-    overflow: hidden;
-    border-radius: 10px;
+button{text-align: center;
+  width: 40%;
+  background-color: rgba(13, 71, 161, 0.84);
+  color: white;
+
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+}
+button[id="delete"]{
+    background-color: #ab0000;
+}
+    button:hover {
+  background-color: rgb(0, 105, 255);
+
+}
+     button[id="delete"]:hover {
+  background-color: rgb(255, 0, 0);
 
 }
 
@@ -81,6 +94,74 @@ table {
 /* Right-aligned section inside the top navigation */
 .topnav-right {
   float: right;
+}
+/* The container */
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: -7px;
+  left: 37px;
+  height: 25px;
+  width: 25px;
+  background-color: rgba(18, 227, 203, 0.55);
+    border-radius:10px
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: rgba(18, 227, 203, 0.88);
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #0f479b;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
 </style>
@@ -116,13 +197,19 @@ table {
         {% for task in tasks %}
 
             <tr>
-                <td> <input type="checkbox" id="task_{{ task.task_id }}" {% if task.completed %}checked{% endif %} onclick="markTaskAsDone({{ task.id_task }})"> </td>
+                <td>
+                    <label class="container">
+                        <input type="checkbox" id="task_{{ task.task_id }}" {% if task.completed %}checked{% endif %} onclick="markTaskAsDone({{ task.id_task }})">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+
                 <td> {{ task.title }} </td>
                 <td>{{ task.description }} </td>
                 <td>{{ task.deadline }} </td>
                 <td>{{task.completed}} </td>
                 <td> <button onclick="updateTask({{task.id_task}})">Update</button>
-                <button onclick="deleteTask({{ task.id_task}})">Delete</button> </td>
+                <button id="delete" onclick="deleteTask({{ task.id_task}})">Delete</button> </td>
             </tr>
         {% endfor %}
     </table>
