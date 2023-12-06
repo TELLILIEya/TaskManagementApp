@@ -8,6 +8,9 @@
 </head>
 <style>
     @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,700');
+    body{
+        font-family: Poppins;
+    }
 h1 {
     text-align: center;
     font-family: Poppins;
@@ -149,6 +152,74 @@ table {
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
+button {
+  text-align: center;
+  width: 35%;
+  background-color: rgb(15, 71, 155);
+  color: white;
+  border: none;
+   padding: 5px 0;
+  margin: 1px 3px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+
+}
+
+    button:hover {
+  background-color: rgb(8, 94, 229);
+
+}
+    button[id="delete"]{
+        background-color: #a80000;
+    }
+    button[id="delete"]:hover {
+        background-color: #ff0000;
+    }
+
+
+.filters-list{
+    display: inline;
+}
+.filters-list li {
+    display: inline-block;
+    margin-right: 100px;
+}
+.custom-select {
+  min-width: 50px;
+  position: relative;
+}
+
+input[type="date"],select {
+  appearance: none;
+  /*  safari  */
+  -webkit-appearance: none;
+  /*  other styles for aesthetics */
+  width: 100%;
+  font-size: 1.15rem;
+  padding: 0.4em 0em 0.4em 0.5em;
+
+  background-color: rgba(30, 181, 163, 0.49);
+  border: 1px solid #caced1;
+  border-radius: 0.25rem;
+  color: #000;
+  cursor: pointer;
+}
+
+.custom-select::before,
+.custom-select::after {
+  --size: 0.1rem;
+  content: "";
+  position: absolute;
+  right: 1rem;
+  pointer-events: none;
+}
+
+
+
+
+.filters{ text-align: center;}
+
 
 </style>
 <body>
@@ -167,6 +238,35 @@ table {
 
 
     <h1>Task List for {{ current_user.username }} ! </h1>
+    <div class="filters">
+
+    <div class="filters-list">
+        <ul>
+            <li>
+                <label for="date">Choose Date:</label> <br>
+                <input type="date" >
+            </li>
+            <li>
+                <div class="custom-select">
+                <label for="select">Category:</label>
+
+                <select>
+                    <option value="">All</option>
+                    <option value="">Missed</option>
+                    <option value="">Done</option>
+                    <option value="">Note Done</option>
+
+                </select>
+
+                     </div>
+
+
+            </li>
+        </ul>
+
+
+    </div>
+    </div>
 
     <table id="tasks">
         <tr>
@@ -174,7 +274,6 @@ table {
             <th> Task Title </th>
             <th> Task Description </th>
             <th> Task Deadline </th>
-            <th> Task Completed </th>
             <th> Update / Delete </th>
 
         </tr>
@@ -183,11 +282,17 @@ table {
         {% for task in tasks %}
 
             <tr>
-                <td> <input type="checkbox" id="task_{{ task.task_id }}" {% if task.completed %}checked{% endif %} onclick="markTaskAsDone({{ task.id_task }})"> </td>
+            <td>
+             <label class="container">
+
+                     <input type="checkbox" id="task_{{ task.task_id }}" {% if task.completed %}checked{% endif %} onclick="markTaskAsDone({{ task.id_task }})">
+                     <span class="checkmark"> </span>
+
+             </label>
+             </td>
                 <td> {{ task.title }} </td>
                 <td>{{ task.description }} </td>
                 <td>{{ task.deadline }} </td>
-                <td>{{task.completed}} </td>
                 <td> <button onclick="updateTask({{task.id_task}})">Update</button>
                 <button id="delete" onclick="deleteTask({{ task.id_task}})">Delete</button> </td>
             </tr>
